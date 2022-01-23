@@ -3,10 +3,10 @@ import "array"
 
 
 FillRange = (
-            timeRangeStart = experimental.subDuration(d:48h,from: now()),
-            timeRangeStop = now(),
-            //timeRangeStart = v.timeRangeStart,
-            //timeRangeStop = v.timeRangeStop,
+            //timeRangeStart = experimental.subDuration(d:48h,from: now()),
+            //timeRangeStop = now(),
+            timeRangeStart = v.timeRangeStart,
+            timeRangeStop = v.timeRangeStop,
             bucket = "homeassistant",
             field_filter = "value",
             measurement_filter = "°C",
