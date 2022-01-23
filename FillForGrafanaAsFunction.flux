@@ -69,6 +69,7 @@ FillRecord4 = from(bucket: bucket)
 
 FillValue2 = if (exists FillRecord3._value) then FillRecord3._value 
              else if (exists FillRecord4._value) then FillRecord4._value
+             else if (exists FillRecord1._value) then FillRecord1._value
              else default_fill_value_end
 
 start_rec = [
