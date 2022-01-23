@@ -99,15 +99,22 @@ FirstRow = array.from(rows:start_rec)
 LastRow = array.from(rows:stop_rec)
 
 
-Table = union(tables: [FirstRow,Data,LastRow])
+Table1 = union(tables: [FirstRow,Data,LastRow])
   |> set(key: "entity_id", value: display_name)
-  |>  group(columns: ["entity_id"], mode: "by")
-  //|> aggregateWindow(every: 10m, fn: mean, createEmpty: true)
-  //|> fill(column: "_value", usePrevious: true)
+  |> group(columns: ["entity_id"], mode: "by")
+  |> aggregateWindow(every: 10m, fn: mean, createEmpty: true)
+  |> fill(column: "_value", usePrevious: true)
+  |> sort(columns: ["_time"], desc: false)
+
+Table2 = union(tables: [FirstRow,Data,LastRow])
+  |> set(key: "entity_id", value: display_name)
+  |> group(columns: ["entity_id"], mode: "by")
   |> window(every:inf,timeColumn:"_time")
   |> sort(columns: ["_time"], desc: false)
-return Table  
+
+  return if "${AggregateWindow}"=="enabled" then Table1 else Table2 
 }
+
 FillRange (entity_id_filter:"temperature_1",display_name: "Keller hinten")
   |> yield(name: "Keller hinten")
 FillRange (entity_id_filter:"temperature_2",display_name: "Arbeitszimmer")
